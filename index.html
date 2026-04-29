@@ -144,7 +144,7 @@ function update() {
   document.getElementById("ads").innerText = ads;
   document.getElementById("points").innerText = points;
 
-  let progress = (ads % 5) * 20;
+  let progress = (ads % 2) * 20;
   document.getElementById("fill").style.width = progress + "%";
 }
 
