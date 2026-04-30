@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- Monetag -->
-<script src='//libtl.com/sdk.js' data-zone='10816880' data-sdk='show_10816880'></script>
+<script src='https://libtl.com/sdk.js' data-zone='10816880' data-sdk='show_10816880'></script>
 
 <!-- Telegram -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -35,7 +35,7 @@ body {
   100% {background-position:0% 50%;}
 }
 
-/* ⚡ FULL SCREEN CANVAS */
+/* ⚡ Canvas Full Screen */
 canvas {
   position: fixed;
   top: 0;
@@ -144,7 +144,7 @@ function update() {
   document.getElementById("ads").innerText = ads;
   document.getElementById("points").innerText = points;
 
-  let progress = (ads % 2) * 20;
+  let progress = (ads % 5) * 20;
   document.getElementById("fill").style.width = progress + "%";
 }
 
@@ -153,12 +153,7 @@ function watchAd() {
 
     show_10816880().then(() => {
       ads++;
-      points++;
-
-      if (ads % 2 === 0) {
-        points += 10;
-        alert("🎁 Bonus +10");
-      }
+      points++; // ✅ শুধু ১ point
 
       update();
     }).catch(() => {
@@ -187,7 +182,7 @@ window.addEventListener("resize", resize);
 
 let nodes = [];
 
-// 🔥 More nodes (full screen coverage)
+// nodes generate
 for (let i = 0; i < 25; i++) {
   nodes.push({
     x: Math.random() * canvas.width,
@@ -207,14 +202,12 @@ function draw() {
 
       if (dist < 350) {
 
-        // line
         ctx.strokeStyle = "rgba(34,197,94,0.15)";
         ctx.beginPath();
         ctx.moveTo(nodes[i].x, nodes[i].y);
         ctx.lineTo(nodes[j].x, nodes[j].y);
         ctx.stroke();
 
-        // ⚡ moving energy
         let progress = (Date.now() % 2000) / 2000;
 
         let px = nodes[i].x + (nodes[j].x - nodes[i].x) * progress;
@@ -228,7 +221,6 @@ function draw() {
     }
   }
 
-  // nodes
   nodes.forEach(n => {
     ctx.fillStyle = "#22c55e";
     ctx.beginPath();
