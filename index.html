@@ -35,47 +35,60 @@ body {
   100% {background-position:0% 50%;}
 }
 
-/* ⚡ Canvas Full Screen */
+/* ⚡ Canvas */
 canvas {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   z-index: 0;
 }
 
-/* 🧊 Glass Card */
+/* 🧊 Card */
 .box {
   width:360px;
   padding:25px;
   border-radius:20px;
   backdrop-filter: blur(15px);
   background: rgba(30,41,59,0.6);
-  box-shadow: 0 0 30px rgba(0,0,0,0.5);
   text-align:center;
   z-index:2;
   position:relative;
 }
 
-/* Text */
-h2 { margin-bottom:10px; }
-p { margin:6px 0; }
-
-/* Progress */
-.progress {
-  height:12px;
-  background:#1e293b;
-  border-radius:10px;
+/* ⚡ Power Line */
+.power-line {
   margin-top:15px;
-  overflow:hidden;
+  height:20px;
+  position:relative;
 }
 
-.fill {
-  height:100%;
-  width:0%;
-  background: linear-gradient(90deg, #22c55e, #4ade80);
-  transition:0.5s;
+.line {
+  width:100%;
+  height:4px;
+  background: rgba(255,255,255,0.2);
+  border-radius:10px;
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+.energy {
+  width:10px;
+  height:10px;
+  background:#4ade80;
+  border-radius:50%;
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  box-shadow:0 0 10px #4ade80;
+  animation: moveEnergy 2s linear infinite;
+}
+
+@keyframes moveEnergy {
+  0% { left:0%; }
+  100% { left:100%; }
 }
 
 /* Button */
@@ -89,13 +102,6 @@ button {
   color:white;
   font-weight:bold;
   cursor:pointer;
-  box-shadow: 0 0 15px rgba(34,197,94,0.6);
-  transition:0.3s;
-}
-
-button:hover {
-  transform:scale(1.05);
-  box-shadow: 0 0 25px rgba(34,197,94,1);
 }
 
 </style>
@@ -103,20 +109,19 @@ button:hover {
 
 <body>
 
-<!-- ⚡ Electric Background -->
 <canvas id="bg"></canvas>
 
-<!-- UI -->
 <div class="box">
   <h2>⚡ ADS REWARDS</h2>
 
   <p id="user">Checking login...</p>
-
   <p>📺 Ads: <span id="ads">0</span></p>
   <p>💰 Points: <span id="points">0</span></p>
 
-  <div class="progress">
-    <div class="fill" id="fill"></div>
+  <!-- ⚡ Power Flow -->
+  <div class="power-line">
+    <div class="line"></div>
+    <div class="energy"></div>
   </div>
 
   <button onclick="watchAd()">🚀 Watch Ad</button>
@@ -124,7 +129,7 @@ button:hover {
 
 <script>
 
-// ================= TELEGRAM + ADS =================
+// Ads logic
 let ads = 0;
 let points = 0;
 
@@ -132,34 +137,24 @@ let tg = window.Telegram.WebApp;
 tg.expand();
 
 if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-  let user = tg.initDataUnsafe.user;
   document.getElementById("user").innerText =
-    "👤 " + user.first_name;
+    "👤 " + tg.initDataUnsafe.user.first_name;
 } else {
-  document.getElementById("user").innerText =
-    "❌ Open from Telegram";
+  document.getElementById("user").innerText = "❌ Open from Telegram";
 }
 
 function update() {
   document.getElementById("ads").innerText = ads;
   document.getElementById("points").innerText = points;
-
-  let progress = (ads % 5) * 20;
-  document.getElementById("fill").style.width = progress + "%";
 }
 
 function watchAd() {
   if (typeof show_10816880 === 'function') {
-
     show_10816880().then(() => {
       ads++;
-      points++; // ✅ শুধু ১ point
-
+      points++;
       update();
-    }).catch(() => {
-      alert("Ad failed ❌");
-    });
-
+    }).catch(() => alert("Ad failed ❌"));
   } else {
     alert("SDK not loaded ❌");
   }
@@ -168,7 +163,7 @@ function watchAd() {
 update();
 
 
-// ================= ⚡ ELECTRIC NETWORK =================
+// ⚡ Background Electric Network
 const canvas = document.getElementById("bg");
 const ctx = canvas.getContext("2d");
 
@@ -177,12 +172,9 @@ function resize() {
   canvas.height = window.innerHeight;
 }
 resize();
-
 window.addEventListener("resize", resize);
 
 let nodes = [];
-
-// nodes generate
 for (let i = 0; i < 25; i++) {
   nodes.push({
     x: Math.random() * canvas.width,
@@ -201,7 +193,6 @@ function draw() {
       let dist = Math.sqrt(dx * dx + dy * dy);
 
       if (dist < 350) {
-
         ctx.strokeStyle = "rgba(34,197,94,0.15)";
         ctx.beginPath();
         ctx.moveTo(nodes[i].x, nodes[i].y);
