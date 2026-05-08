@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- Monetag -->
-<script src='//libtl.com/sdk.js' data-zone='10968299' data-sdk='show_10968299'></script>
+<script src='//libtl.com/sdk.js' data-zone='10981859' data-sdk='show_10981859'></script>
 
 <!-- Telegram -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-<title>ADS REWARDS</title>
+<title>Self Earn</title>
 
 <style>
 
@@ -112,7 +112,7 @@ button {
 <canvas id="bg"></canvas>
 
 <div class="box">
-  <h2>⚡ ADS REWARDS</h2>
+  <h2>⚡ Self Earn</h2>
 
   <p id="user">Checking login...</p>
   <p>📺 Ads: <span id="ads">0</span></p>
@@ -149,8 +149,8 @@ function update() {
 }
 
 function watchAd() {
-  if (typeof show_10968299 === 'function') {
-    show_10968299().then(() => {
+  if (typeof show_10981859 === 'function') {
+    show_10981859().then(() => {
       ads++;
       points++;
       update();
